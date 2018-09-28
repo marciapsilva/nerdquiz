@@ -3,23 +3,38 @@ page('/movies', moviePage);
 page('/tv', tvPage);
 page('/books', bookPage);
 page('/games', gamePage);
+page('/ranking', rankingPage);
+page('/contact', contactPage);
 page();
 
 $(document).ready(function(){
-  $('#qmovies').on('click', () => page('/movies'));
-  $('#qtelevision').on('click', () => page('/tv'));
-  $('#qbooks').on('click', () => page('/books'));
-  $('#qgames').on('click', () => page('/games'));
+
 })
 
 function home() {
   $('main').html(renderHome());
-}
+};
 
-function moviePage() {renderMovieQuiz()};
+function moviePage() {
+  renderMovieQuiz();
+};
 
-function tvPage() {renderTvQuiz()};
+function tvPage() {
+  renderTvQuiz();
+};
 
-function bookPage() {renderBookQuiz()};
+function bookPage() {
+  renderBookQuiz();
+};
 
-function gamePage() {renderGameQuiz()};
+function gamePage() {
+  renderGameQuiz();
+};
+
+function rankingPage() {
+  renderRanking();
+};
+
+function contactPage() {
+  renderContact();
+};

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  // $('main').on('click', '#show-signup-modal', showSignUpModal);
+  $('main').on('click', '.option', selectAnswer);
 })
 
 const renderHome = () => {
@@ -37,42 +37,92 @@ const renderGameQuiz = () => {
   }).done(handleResponse);
 }
 
-const handleResponse = (data) => {
+const handleResponse = data => {
   let triviaData = data['results'];
 
   showQuestions(triviaData);
 }
 
-const showQuestions = (data) => {
+const showQuestions = (triviaData) => {
   $('main').empty();
 
   for (i = 0; i < 6; i++) {
-    let question = data[i]['question'];
-    let answer = data[i]['correct_answer'];
-    let optOne = data[i]['incorrect_answers'][0];
-    let optTwo = data[i]['incorrect_answers'][1];
-    let optThree = data[i]['incorrect_answers'][2];
+    setDelay(i, triviaData);
+  }
+}
+
+function setDelay(i, triviaData) {
+  setTimeout(function(){
+    let question = triviaData[i]['question'];
+    let answer = triviaData[i]['correct_answer'];
+    let optOne = triviaData[i]['incorrect_answers'][0];
+    let optTwo = triviaData[i]['incorrect_answers'][1];
+    let optThree = triviaData[i]['incorrect_answers'][2];
+    let questionNumber = i;
 
     let answerRoll = [answer, optOne, optTwo, optThree];
+    let shuffledAnswered = shuffle(answerRoll);
 
-    let template = `
-      <div class="question-container">
-        <h3>${question}</h3>
-        <div class="option" data-option="one">
-          <span>${answerRoll[0]}</span> 
-        </div>
-        <div class="option" data-option="two">
-          <span>${answerRoll[1]}</span> 
-        </div>
-        <div class="option" data-option="three">
-          <span>${answerRoll[2]}</span> 
-        </div>
-        <div class="option" data-option="four">
-          <span>${answerRoll[3]}</span> 
-        </div>
-      </div>
-    `
+    insertTemplate(questionNumber, question, shuffledAnswered);
+  }, i*6000);
+    // countdown();
+}
 
-    $('main').append(template);
+const shuffle = array => {
+  let counter = array.length;
+
+  while (counter > 0) {
+      let randomNumb = Math.floor(Math.random() * counter);
+
+      counter--
+      
+      let temp = array[counter];
+      array[counter] = array[randomNumb];
+      array[randomNumb] = temp;
   }
+  return array;
+}
+
+const insertTemplate = (questionNumber, question, shuffledAnswered) => {
+  let template = `
+    <div class="question-container">
+      <div class="timer-bar">
+        <div class="timer" id="timer"></div>
+      </div>
+      <h3>${question}</h3>
+      <div class="option" data-option="one" data-question-number="${questionNumber}">
+        <span>${shuffledAnswered[0]}</span> 
+      </div>
+      <div class="option" data-option="two" data-question-number="${questionNumber}">
+        <span>${shuffledAnswered[1]}</span> 
+      </div>
+      <div class="option" data-option="three" data-question-number="${questionNumber}">
+        <span>${shuffledAnswered[2]}</span> 
+      </div>
+      <div class="option" data-option="four" data-question-number="${questionNumber}">
+        <span>${shuffledAnswered[3]}</span> 
+      </div>
+    </div>
+  `
+
+  $('main').html(template);
+}
+
+// const countdown = () => {
+//   let width = 100;
+//   let id = setInterval(frame, 60);
+
+//   function frame() {
+//     while (width !== 0) {
+//       width--;
+//       console.log(width);
+//       $('#timer').width(`${width}%`); 
+//     }
+//   }
+// }
+
+const selectAnswer = (e) => {
+  const clickTarget = e.target;
+  
+  $(clickTarget).addClass('selected-answer');
 }
