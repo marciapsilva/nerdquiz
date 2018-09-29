@@ -13,6 +13,24 @@ const renderHome = () => {
   `
 }
 
+// var return_first;
+// function callback(response) {
+//   return_first = response;
+// }
+
+// console.log(return_first);
+
+// $.ajax({
+//   'type': "GET",
+//   'global': false,
+//   'dataType': 'json',
+//   'url': "https://opentdb.com/api.php?amount=5&category=11&difficulty=easy&type=multiple",
+//   // 'data': { 'request': "", 'target': arrange_url, 'method': method_target },
+//   'success': function(data){
+//        callback(data);
+//   },
+// });
+
 const renderMovieQuiz = () => {
   $.ajax({
     url: 'https://opentdb.com/api.php?amount=5&category=11&difficulty=easy&type=multiple'
@@ -39,8 +57,8 @@ const renderGameQuiz = () => {
 
 const handleResponse = data => {
   let triviaData = data['results'];
-
   showQuestions(triviaData);
+  return triviaData;
 }
 
 const showQuestions = (triviaData) => {
@@ -64,8 +82,8 @@ function setDelay(i, triviaData) {
     let shuffledAnswered = shuffle(answerRoll);
 
     insertTemplate(questionNumber, question, shuffledAnswered);
+    countdown();
   }, i*6000);
-    // countdown();
 }
 
 const shuffle = array => {
@@ -90,39 +108,42 @@ const insertTemplate = (questionNumber, question, shuffledAnswered) => {
         <div class="timer" id="timer"></div>
       </div>
       <h3>${question}</h3>
-      <div class="option" data-option="one" data-question-number="${questionNumber}">
-        <span>${shuffledAnswered[0]}</span> 
-      </div>
-      <div class="option" data-option="two" data-question-number="${questionNumber}">
-        <span>${shuffledAnswered[1]}</span> 
-      </div>
-      <div class="option" data-option="three" data-question-number="${questionNumber}">
-        <span>${shuffledAnswered[2]}</span> 
-      </div>
-      <div class="option" data-option="four" data-question-number="${questionNumber}">
-        <span>${shuffledAnswered[3]}</span> 
-      </div>
+      <div class="option" data-option="one" data-question-number="${questionNumber}">${shuffledAnswered[0]}</div>
+      <div class="option" data-option="two" data-question-number="${questionNumber}">${shuffledAnswered[1]}</div>
+      <div class="option" data-option="three" data-question-number="${questionNumber}">${shuffledAnswered[2]}</div>
+      <div class="option" data-option="four" data-question-number="${questionNumber}">${shuffledAnswered[3]}</div>
     </div>
   `
 
   $('main').html(template);
+  $('main .question-container').css('border', 'none');
 }
 
-// const countdown = () => {
-//   let width = 100;
-//   let id = setInterval(frame, 60);
+function countdown() {
+  var width = 100;
+  var id = setInterval(frame, 48);
 
-//   function frame() {
-//     while (width !== 0) {
-//       width--;
-//       console.log(width);
-//       $('#timer').width(`${width}%`); 
-//     }
-//   }
-// }
+  function frame() {
+      if (width === 0) {
+          clearInterval(id);
+          // $('main #timer').css('width', '100%');
+      } else {
+          width -= 1;
+          $('main #timer').css('width', `${width}%`);
+      }
+  }
+} 
 
 const selectAnswer = (e) => {
   const clickTarget = e.target;
-  
+  let userAnswer = $(clickTarget).text();
+
   $(clickTarget).addClass('selected-answer');
+
+  if (userAnswer === 'dont know') {
+    $('main .question-container').css('border', '4px solid green');
+  } else {
+    $('main .question-container').css('border', '4px solid red');
+  }
 }
+
