@@ -1,81 +1,72 @@
 $(document).ready(function(){
   $('main').on('click', '.option', selectAnswer);
+  $('main').on('click', '.start-game', startGame);
+  $('main').on('click', '.play-again', () => {
+    getMovieQuiz();
+    $('main').html(renderGameStartTemplate());
+  });
 })
 
-const renderHome = () => {
-  return `
-  <div class="quiz-container">
-    <h1>NerdQuiz</h1>
-    <h4>Regras:</h4>
-    <p>O jogo contém 15 perguntas de graus de dificuldade diferentes. São 5 perguntas de nível fácil, 5 de nível médio e 5 de nível difícil. Será que você é capaz de adivinhar todas e se consagrar um nerd de carteirinha?</p>
-    <p>Para jogar, clique na categoria desejada no menu. Que a força esteja com você!</p>
-  </div>
-  `
-}
+let score = 0;
 
-// var return_first;
-// function callback(response) {
-//   return_first = response;
-// }
-
-// console.log(return_first);
-
-// $.ajax({
-//   'type': "GET",
-//   'global': false,
-//   'dataType': 'json',
-//   'url': "https://opentdb.com/api.php?amount=5&category=11&difficulty=easy&type=multiple",
-//   // 'data': { 'request': "", 'target': arrange_url, 'method': method_target },
-//   'success': function(data){
-//        callback(data);
-//   },
-// });
-
-const renderMovieQuiz = () => {
+const getMovieQuiz = () => {
   $.ajax({
     url: 'https://opentdb.com/api.php?amount=5&category=11&difficulty=easy&type=multiple'
   }).done(handleResponse);
 }
 
-const renderTvQuiz = () => {
+const getTvQuiz = () => {
   $.ajax({
     url: 'https://opentdb.com/api.php?amount=5&category=14&difficulty=easy&type=multiple'
   }).done(handleResponse);
 }
 
-const renderBookQuiz = () => {
+const getBookQuiz = () => {
   $.ajax({
     url: 'https://opentdb.com/api.php?amount=5&category=10&difficulty=easy&type=multiple'
   }).done(handleResponse);
 }
 
-const renderGameQuiz = () => {
+const getGameQuiz = () => {
   $.ajax({
     url: 'https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple'
   }).done(handleResponse);
 }
 
+let quizData;
 const handleResponse = data => {
-  let triviaData = data['results'];
-  showQuestions(triviaData);
-  return triviaData;
+  quizData = data['results'];
 }
 
-const showQuestions = (triviaData) => {
+const startGame = () => {
+  score = 0;
   $('main').empty();
 
-  for (i = 0; i < 6; i++) {
-    setDelay(i, triviaData);
-  }
+  let i = 0;
+  let question = quizData[i]['question'];
+  let answer = quizData[i]['correct_answer'];
+  let optOne = quizData[i]['incorrect_answers'][0];
+  let optTwo = quizData[i]['incorrect_answers'][1];
+  let optThree = quizData[i]['incorrect_answers'][2];
+  let questionNumber = i;
+
+  let answerRoll = [answer, optOne, optTwo, optThree];
+  let shuffledAnswered = shuffle(answerRoll);
+
+  insertTemplate(questionNumber, question, shuffledAnswered);
+  countdown();
+  i++;
+
+  nextQuestions(i);
 }
 
-function setDelay(i, triviaData) {
-  setTimeout(function(){
-    let question = triviaData[i]['question'];
-    let answer = triviaData[i]['correct_answer'];
-    let optOne = triviaData[i]['incorrect_answers'][0];
-    let optTwo = triviaData[i]['incorrect_answers'][1];
-    let optThree = triviaData[i]['incorrect_answers'][2];
+const nextQuestions = (i) => { 
+  let teste2 = setInterval(() => {
+    let question = quizData[i]['question'];
+    let answer = quizData[i]['correct_answer'];
+    let optOne = quizData[i]['incorrect_answers'][0];
+    let optTwo = quizData[i]['incorrect_answers'][1];
+    let optThree = quizData[i]['incorrect_answers'][2];
     let questionNumber = i;
 
     let answerRoll = [answer, optOne, optTwo, optThree];
@@ -83,7 +74,14 @@ function setDelay(i, triviaData) {
 
     insertTemplate(questionNumber, question, shuffledAnswered);
     countdown();
-  }, i*6000);
+
+    i++;
+
+    if (i === 5) { 
+      clearInterval(teste2);
+      showScore();
+    }
+  }, 6000);
 }
 
 const shuffle = array => {
@@ -102,20 +100,7 @@ const shuffle = array => {
 }
 
 const insertTemplate = (questionNumber, question, shuffledAnswered) => {
-  let template = `
-    <div class="question-container">
-      <div class="timer-bar">
-        <div class="timer" id="timer"></div>
-      </div>
-      <h3>${question}</h3>
-      <div class="option" data-option="one" data-question-number="${questionNumber}">${shuffledAnswered[0]}</div>
-      <div class="option" data-option="two" data-question-number="${questionNumber}">${shuffledAnswered[1]}</div>
-      <div class="option" data-option="three" data-question-number="${questionNumber}">${shuffledAnswered[2]}</div>
-      <div class="option" data-option="four" data-question-number="${questionNumber}">${shuffledAnswered[3]}</div>
-    </div>
-  `
-
-  $('main').html(template);
+  $('main').html(questionTemplate(questionNumber, question, shuffledAnswered));
   $('main .question-container').css('border', 'none');
 }
 
@@ -126,7 +111,6 @@ function countdown() {
   function frame() {
       if (width === 0) {
           clearInterval(id);
-          // $('main #timer').css('width', '100%');
       } else {
           width -= 1;
           $('main #timer').css('width', `${width}%`);
@@ -140,10 +124,14 @@ const selectAnswer = (e) => {
 
   $(clickTarget).addClass('selected-answer');
 
-  if (userAnswer === 'dont know') {
+  if (userAnswer === quizData[$(clickTarget).attr('data-question-number')].correct_answer) {
     $('main .question-container').css('border', '4px solid green');
+    score += 1;
   } else {
     $('main .question-container').css('border', '4px solid red');
   }
 }
 
+const showScore = () => {
+  return $('main').html(scoreTemplate(score));
+}
