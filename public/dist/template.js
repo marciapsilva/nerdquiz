@@ -1,26 +1,32 @@
 const renderHome = () => {
   return `
-  <div class="quiz-container">
-    <h1>NerdQuiz</h1>
-    <h4>Regras:</h4>
-    <p>O jogo contém 15 perguntas de graus de dificuldade diferentes. São 5 perguntas de nível fácil, 5 de nível médio e 5 de nível difícil. Será que você é capaz de adivinhar todas e se consagrar um nerd de carteirinha?</p>
-    <p>Para jogar, clique na categoria desejada no menu. Que a força esteja com você!</p>
+  <div class="main-container">
+    <h1>Do you think you are a pop culture expert?</h1>
+    <h2>Find out by taking one of our nerdquizzes!</h2>
+    <h3>How to play:</h3>
+    <p>It's easy, select one of the categories on the main menu and click start to begin playing.</p>
   </div>
   `;
-}
+};
 
-const renderGameStartTemplate = () => {
+const renderGameStartTemplate = category => {
   return `
-    <div class="quiz-container">
-      <h1>NerdQuiz</h1>
-      <h4>Regras:</h4>
-      <p>O jogo contém 15 perguntas de graus de dificuldade diferentes. São 5 perguntas de nível fácil, 5 de nível médio e 5 de nível difícil. Será que você é capaz de adivinhar todas e se consagrar um nerd de carteirinha?</p>
-      <button class="start-game">Começar</button>
+    <div class="question-container">
+      <h1>${category} Quiz</h1>
+      <h4>Rules:</h4>
+      <ul>
+        <li>The game has 5 questions;</li>
+        <li>You'll have 10 seconds to answer each question;</li>
+        <li>Once you've selected an answer you can not change it;</li>
+        <li>You can play as long as you want. Our database has plenty of questions to test your nerd knowledge. ;-)</li>
+      </ul>
+      <p>May the force be with you.</p>
+      <button class="start-game">Start</button>
     </div>
   `;
-}
+};
 
-const questionTemplate = (questionNumber, question, shuffledAnswered) => {
+const renderQuestionTemplate = (questionNumber, question, shuffledAnswered) => {
   return `
     <div class="question-container">
       <div class="timer-bar">
@@ -33,15 +39,36 @@ const questionTemplate = (questionNumber, question, shuffledAnswered) => {
       <div class="option" data-option="four" data-question-number="${questionNumber}">${shuffledAnswered[3]}</div>
     </div>
   `;
-}
+};
 
-const scoreTemplate = score => {
+const renderScoreTemplate = score => {
   return `
     <div class="results-container">
-      <h1>Fim de jogo!</h1>
-      <p>Você acertou ${score} de 5 perguntas.</p>
+      <h1>Game Over!</h1>
+      <p>You got ${score} out of 5 right.</p>
     </div>
   `;
-}
+};
 
-//      <button class="play-again">Jogar novamente</button>
+const renderContact = () => {
+  return `
+    <div class="contact-container">
+      <h1>Contact</h1>
+      <h3>Have you found any bug in the game? Do you have any complaint or suggestion how we can improve your game experience? Send us an e-mail. We'll love to hear your opinion about our quizzes.</h3>
+      <form action="">
+        <input type="text" id="form-name" placeholder="Name">
+        <input type="text" id="form-email" placeholder="E-mail">
+        <textarea name="" id="form-message" cols="30" rows="10" placeholder="Message"></textarea>
+        <button id="send-message" type="button">Send</button>
+      </form>
+    </div>
+  `;
+};
+
+const renderSentMessageConfirmation = () => {
+  return `
+    <div class="contact-container">
+      <h3>Message delivered with success! We'll contact you back soon! Thank you.</h3>
+    </div>
+  `;
+};

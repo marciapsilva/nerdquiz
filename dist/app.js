@@ -1,114 +1,74 @@
-$(document).ready(function(){
-  $('main').on('click', '.option', selectAnswer);
+$(document).ready(() => {
   $('main').on('click', '.start-game', startGame);
+  $('main').on('click', '.option', selectAnswer);
+  $('.quit-test').on('click', stopQuiz);
   $('main').on('click', '#send-message', sentMessageConfirmation);
-  $('.quit-test').on('click', stopStuff);
-})
+});
 
 const requestToken = () => {
-  $.ajax({
-    url: 'https://opentdb.com/api_token.php?command=request'
-  }).done(handleTokenResponse);
-}
+  if (localStorage.getItem('nerdquizToken') === null) {
+    $.ajax({
+      url: 'https://opentdb.com/api_token.php?command=request'
+    }).done(handleTokenResponse);
+  }
+};
 
-const getMovieQuiz = () => {
-  console.log(token);
-  $.ajax({
-    url: `https://opentdb.com/api.php?amount=5&category=11&difficulty=easy&type=multiple&token=${token}`
-  }).done(handleQuizResponse);
-}
+const handleTokenResponse = data => {
+  localStorage.setItem('nerdquizToken', data['token']); 
+};
 
-const getTvQuiz = () => {
-  console.log(token);
-  $.ajax({
-    url: `https://opentdb.com/api.php?amount=5&category=14&difficulty=easy&type=multiple&token=${token}`
-  }).done(handleQuizResponse);
-}
+const localStorageToken = () => {
+  return localStorage.getItem('nerdquizToken');
+};
 
-const getBookQuiz = () => {
-  console.log(token);
+const getQuizData = categoryId => {
   $.ajax({
-    url: `https://opentdb.com/api.php?amount=5&category=10&difficulty=easy&type=multiple&token=${token}`
-  }).done(handleQuizResponse);
-}
-
-const getGameQuiz = () => {
-  console.log(token);
-  $.ajax({
-    url: `https://opentdb.com/api.php?amount=5&category=15&difficulty=easy&type=multiple&token=${token}`
-  }).done(handleQuizResponse);
-}
+    url: `https://opentdb.com/api.php?amount=5&category=${categoryId}&difficulty=easy&type=multiple&token=${localStorageToken()}`
+  }).done(data => handleQuizDataResponse(data, categoryId));
+};
 
 let quizData;
-const handleQuizResponse = data => {
-  quizData = data['results'];
-}
-
-let token;
-const handleTokenResponse = data => {
+const handleQuizDataResponse = (data, categoryId) => {
   if (data['response_code'] === 4 || data['response_code'] === 1) {
+    localStorage.removeItem('nerdquizToken');
     requestToken();
+    setTimeout(() => {getQuizData(categoryId)}, 500);
   } else {
-    token = data['token'];
+    quizData = data['results'];
   }
-}
+};
 
 let score = 0;
 const startGame = () => {
-  score = 0;
   $('main').empty();
+  score = 0;
 
   let i = 0;
-  let question = quizData[i]['question'];
-  let answer = quizData[i]['correct_answer'];
-  let optOne = quizData[i]['incorrect_answers'][0];
-  let optTwo = quizData[i]['incorrect_answers'][1];
-  let optThree = quizData[i]['incorrect_answers'][2];
-  let questionNumber = i;
-
-  let answerRoll = [answer, optOne, optTwo, optThree];
-  let shuffledAnswered = shuffle(answerRoll);
-
-  insertTemplate(questionNumber, question, shuffledAnswered);
-  countdown();
+  getQuestionData(i);
   i++;
-
   nextQuestions(i);
-}
+};
 
-var interval = null;    
-const nextQuestions = (i) => { 
-  interval = setInterval(() => {
-    let question = quizData[i]['question'];
-    let answer = quizData[i]['correct_answer'];
-    let optOne = quizData[i]['incorrect_answers'][0];
-    let optTwo = quizData[i]['incorrect_answers'][1];
-    let optThree = quizData[i]['incorrect_answers'][2];
-    let questionNumber = i;
+const getQuestionData = (i) => {
+  const question = quizData[i]['question'];
+  const answer = quizData[i]['correct_answer'];
+  const optOne = quizData[i]['incorrect_answers'][0];
+  const optTwo = quizData[i]['incorrect_answers'][1];
+  const optThree = quizData[i]['incorrect_answers'][2];
+  const questionNumber = i;
 
-    let answerRoll = [answer, optOne, optTwo, optThree];
-    let shuffledAnswered = shuffle(answerRoll);
+  const answerRoll = [answer, optOne, optTwo, optThree];
+  const shuffledAnswered = shuffle(answerRoll);
 
-    insertTemplate(questionNumber, question, shuffledAnswered);
-    countdown();
-    i++;
-
-    if (i === 5) { 
-      stopStuff();
-      setTimeout(() => {showScore()}, 10000);
-    }
-  }, 10000);
-}
-
-const stopStuff = () => {
-  clearInterval(interval);
+  showQuestion(questionNumber, question, shuffledAnswered);
+  countdown();
 }
 
 const shuffle = array => {
   let counter = array.length;
 
   while (counter > 0) {
-      let randomNumb = Math.floor(Math.random() * counter);
+      const randomNumb = Math.floor(Math.random() * counter);
 
       counter--
       
@@ -117,30 +77,51 @@ const shuffle = array => {
       array[randomNumb] = temp;
   }
   return array;
-}
+};
 
-const insertTemplate = (questionNumber, question, shuffledAnswered) => {
+const showQuestion = (questionNumber, question, shuffledAnswered) => {
   $('main').html(renderQuestionTemplate(questionNumber, question, shuffledAnswered));
   $('main .question-container').css('border', 'none');
-}
+};
 
-function countdown() {
-  var width = 100;
-  var id = setInterval(frame, 100);
+const countdown = () => {
+  let width = 100;
+  const id = setInterval(frame, 70);
 
   function frame() {
-      if (width === 0) {
-          clearInterval(id);
-      } else {
-          width -= 1;
-          $('main #timer').css('width', `${width}%`);
-      }
+    if (width === 0) {
+      clearInterval(id);
+    } else {
+      width -= 1;
+      $('main #timer').css('width', `${width}%`);
+    }
   }
-}
+};
 
-const selectAnswer = (e) => {
+let newQstnEveryEightSec;    
+const nextQuestions = i => { 
+  newQstnEveryEightSec = setInterval(() => {
+    getQuestionData(i);
+    i++;
+
+    if (i === 5) { 
+      stopQuiz();
+      setTimeout(() => {showScore()}, 8000);
+    }
+  }, 8000);
+};
+
+const stopQuiz = () => {
+  clearInterval(newQstnEveryEightSec);
+};
+
+const showScore = () => {
+  return $('main').html(renderScoreTemplate(score));
+};
+
+const selectAnswer = e => {
   const clickTarget = e.target;
-  let userAnswer = $(clickTarget).text();
+  const userAnswer = $(clickTarget).text();
 
   if (!$(clickTarget).hasClass('disabled')) { 
     $(clickTarget).addClass('selected-answer');
@@ -158,12 +139,8 @@ const selectAnswer = (e) => {
       $(`main .option:eq(${index})`).addClass('disabled');
     }
   })
-}
-
-const showScore = () => {
-  return $('main').html(renderScoreTemplate(score));
-}
+};
 
 const sentMessageConfirmation = () => {
   return $('main').html(renderSentMessageConfirmation());
-}
+};

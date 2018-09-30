@@ -6,37 +6,42 @@ $(document).ready(() => {
   page('/games', gamePage);
   page('/contact', contactPage);
   page();
+
+  requestToken();
 })
 
 function home() {
-  requestToken();
   $('main').html(renderHome());
-};
+}
 
 function moviePage() {
-  getMovieQuiz();
-  let category = 'Movie';
+  const category = 'Movie';
+  const categoryId = '11';
+  getQuizData(categoryId);
   $('main').html(renderGameStartTemplate(category));
-};
+}
 
 function tvPage() {
-  getTvQuiz();
-  let category = 'Tv';
+  const category = 'Tv';
+  const categoryId = '14';
+  getQuizData(categoryId);
   $('main').html(renderGameStartTemplate(category));
-};
+}
 
 function bookPage() {
-  getBookQuiz();
-  let category = 'Literature';
+  const category = 'Literature';
+  const categoryId = '10';
+  getQuizData(categoryId);
   $('main').html(renderGameStartTemplate(category));
-};
+}
 
 function gamePage() {
-  getGameQuiz();
-  let category = 'Game';
+  const category = 'Game';
+  const categoryId = '15';
+  getQuizData(categoryId);
   $('main').html(renderGameStartTemplate(category));
-};
+}
 
 function contactPage() {
   $('main').html(renderContact());
-};
+}

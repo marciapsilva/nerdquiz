@@ -1,43 +1,47 @@
-page('/', home);
-page('/movies', moviePage);
-page('/tv', tvPage);
-page('/books', bookPage);
-page('/games', gamePage);
-// page('/ranking', rankingPage);
-// page('/contact', contactPage);
-page();
+$(document).ready(() => {
+  page('/', home);
+  page('/movies', moviePage);
+  page('/tv', tvPage);
+  page('/books', bookPage);
+  page('/games', gamePage);
+  page('/contact', contactPage);
+  page();
 
-$(document).ready(function(){
+  requestToken();
 })
 
 function home() {
   $('main').html(renderHome());
-};
+}
 
 function moviePage() {
-  getMovieQuiz();
-  $('main').html(renderGameStartTemplate());
-};
+  const category = 'Movie';
+  const categoryId = '11';
+  getQuizData(categoryId);
+  $('main').html(renderGameStartTemplate(category));
+}
 
 function tvPage() {
-  getTvQuiz();
-  $('main').html(renderGameStartTemplate());
-};
+  const category = 'Tv';
+  const categoryId = '14';
+  getQuizData(categoryId);
+  $('main').html(renderGameStartTemplate(category));
+}
 
 function bookPage() {
-  getBookQuiz();
-  $('main').html(renderGameStartTemplate());
-};
+  const category = 'Literature';
+  const categoryId = '10';
+  getQuizData(categoryId);
+  $('main').html(renderGameStartTemplate(category));
+}
 
 function gamePage() {
-  getGameQuiz();
-  $('main').html(renderGameStartTemplate());
-};
+  const category = 'Game';
+  const categoryId = '15';
+  getQuizData(categoryId);
+  $('main').html(renderGameStartTemplate(category));
+}
 
-// function rankingPage() {
-//   renderRanking();
-// };
-
-// function contactPage() {
-//   renderContact();
-// };
+function contactPage() {
+  $('main').html(renderContact());
+}

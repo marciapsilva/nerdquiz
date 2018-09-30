@@ -7,9 +7,9 @@ const renderHome = () => {
     <p>It's easy, select one of the categories on the main menu and click start to begin playing.</p>
   </div>
   `;
-}
+};
 
-const renderGameStartTemplate = (category) => {
+const renderGameStartTemplate = category => {
   return `
     <div class="question-container">
       <h1>${category} Quiz</h1>
@@ -24,7 +24,7 @@ const renderGameStartTemplate = (category) => {
       <button class="start-game">Start</button>
     </div>
   `;
-}
+};
 
 const renderQuestionTemplate = (questionNumber, question, shuffledAnswered) => {
   return `
@@ -39,7 +39,7 @@ const renderQuestionTemplate = (questionNumber, question, shuffledAnswered) => {
       <div class="option" data-option="four" data-question-number="${questionNumber}">${shuffledAnswered[3]}</div>
     </div>
   `;
-}
+};
 
 const renderScoreTemplate = score => {
   return `
@@ -48,7 +48,7 @@ const renderScoreTemplate = score => {
       <p>You got ${score} out of 5 right.</p>
     </div>
   `;
-}
+};
 
 const renderContact = () => {
   return `
@@ -63,7 +63,7 @@ const renderContact = () => {
       </form>
     </div>
   `;
-}
+};
 
 const renderSentMessageConfirmation = () => {
   return `
@@ -71,4 +71,4 @@ const renderSentMessageConfirmation = () => {
       <h3>Message delivered with success! We'll contact you back soon! Thank you.</h3>
     </div>
   `;
-}
+};
