@@ -49,7 +49,7 @@ a {
   font-size: 2rem;
 }
 
-.question-container {
+.quiz-container, .question-container, .results-container {
   width: 40vw;
   margin: 1.5% auto;
   padding: 2%;
@@ -95,4 +95,12 @@ h3 {
   width: 100%;
   height: 15px;
   background-color: rgb(237, 22, 97);
+}
+
+footer a {
+  color: #fff;
+}
+
+footer a:hover {
+  color: rgb(172, 242, 255);
 }

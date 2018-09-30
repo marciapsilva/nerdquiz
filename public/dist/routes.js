@@ -3,12 +3,11 @@ page('/movies', moviePage);
 page('/tv', tvPage);
 page('/books', bookPage);
 page('/games', gamePage);
-page('/ranking', rankingPage);
-page('/contact', contactPage);
+// page('/ranking', rankingPage);
+// page('/contact', contactPage);
 page();
 
 $(document).ready(function(){
-
 })
 
 function home() {
@@ -16,25 +15,29 @@ function home() {
 };
 
 function moviePage() {
-  renderMovieQuiz();
+  getMovieQuiz();
+  $('main').html(renderGameStartTemplate());
 };
 
 function tvPage() {
-  renderTvQuiz();
+  getTvQuiz();
+  $('main').html(renderGameStartTemplate());
 };
 
 function bookPage() {
-  renderBookQuiz();
+  getBookQuiz();
+  $('main').html(renderGameStartTemplate());
 };
 
 function gamePage() {
-  renderGameQuiz();
+  getGameQuiz();
+  $('main').html(renderGameStartTemplate());
 };
 
-function rankingPage() {
-  renderRanking();
-};
+// function rankingPage() {
+//   renderRanking();
+// };
 
-function contactPage() {
-  renderContact();
-};
+// function contactPage() {
+//   renderContact();
+// };

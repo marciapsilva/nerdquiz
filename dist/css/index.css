@@ -7,6 +7,15 @@
   font-size: 1rem;
 }
 
+h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 1.2rem;
+}
+
 header {
   background-color: rgb(172, 242, 255);
 }
@@ -29,6 +38,10 @@ a {
   display: flex;
 }
 
+.d-none {
+  display: none;
+}
+
 .f-wrap {
   flex-wrap: wrap;
 }
@@ -49,7 +62,7 @@ a {
   font-size: 2rem;
 }
 
-.quiz-container, .question-container, .results-container {
+.main-container, .question-container, .results-container, .contact-container {
   width: 40vw;
   margin: 1.5% auto;
   padding: 2%;
@@ -103,4 +116,12 @@ footer a {
 
 footer a:hover {
   color: rgb(172, 242, 255);
+}
+
+.disabled {
+  background-color: rgb(202, 202, 202);
+}
+
+.disabled:hover {
+  background-color: rgb(202, 202, 202);
 }
