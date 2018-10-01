@@ -15,28 +15,28 @@ function home() {
 }
 
 function moviePage() {
-  const category = 'Movie';
+  const category = 'movie';
   const categoryId = '11';
   getQuizData(categoryId);
   $('main').html(renderGameStartTemplate(category));
 }
 
 function tvPage() {
-  const category = 'Tv';
+  const category = 'tv';
   const categoryId = '14';
   getQuizData(categoryId);
   $('main').html(renderGameStartTemplate(category));
 }
 
 function bookPage() {
-  const category = 'Literature';
+  const category = 'book';
   const categoryId = '10';
   getQuizData(categoryId);
   $('main').html(renderGameStartTemplate(category));
 }
 
 function gamePage() {
-  const category = 'Game';
+  const category = 'game';
   const categoryId = '15';
   getQuizData(categoryId);
   $('main').html(renderGameStartTemplate(category));
