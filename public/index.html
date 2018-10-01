@@ -4,42 +4,77 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>NerdQuiz</title>
-  <link href="https://fonts.googleapis.com/css?family=Anton|Raleway:400,600" rel="stylesheet"> 
+  <title>nerdquiz</title>
+  <link href="https://fonts.googleapis.com/css?family=Kanit:600|Raleway:400,500,700" rel="stylesheet"> 
+  <link rel="stylesheet" href="dist/assets/icons/style.css">
   <link rel="stylesheet" href="dist/css/index.css">
   <script src="https://cdn.rawgit.com/visionmedia/page.js/master/page.js"></script>
 </head>
 <body>
   <header>
-    <div class="menu-container">
-      <div class="menu-logo">
-        <a class="logo title-font quit-test" href="/">NerdQuiz</a>
+    <div class="menu-container d-flex j-between">
+      <div class="menu-logo f-1 d-flex">
+        <a class="logo quit-test" href="/">nerdquiz</a>
       </div>
-      <nav>
-        <ul class="menu-nav no-bullets">
-          <li id="qmovies"><a href="/movies" class="nav-login quit-test">Movies</a></li>
-          <li id="qtelevision"><a href="/tv" class="nav-login quit-test">TV</a></li>
-          <li id="qbooks"><a href="/books" class="nav-login quit-test">Literature</a></li>
-          <li id="qgames"><a href="/games" class="nav-login quit-test">Games</a></li>
-          <li id="contact"><a href="/contact" class="nav-login">Contact</a></li>
+      <nav class="links-container d-flex f-wrap j-between f-5">
+        <ul class="menu-nav d-flex al-center no-bullets">
+          <li class="menu-nav-li d-flex" id="qmovies">
+            <a href="/movies" class="nav-login d-flex al-center quit-test">
+              <span class="menu-icon icon-video-camera "></span>
+              <span class="menu-txt-item">movies</span>
+            </a>
+          </li>
+          <li class="menu-nav-li" id="qtelevision">
+            <a href="/tv" class="nav-login d-flex al-center quit-test">
+              <span class="menu-icon icon-tv"></span>
+              <span class="menu-txt-item">tv</span>
+            </a>
+          </li>
+          <li class="menu-nav-li" id="qbooks">
+            <a href="/books" class="nav-login d-flex al-center quit-test">
+              <span class="menu-icon icon-book"></span>
+              <span class="menu-txt-item">literature</span>
+            </a>
+          </li>
+          <li class="menu-nav-li" id="qgames">
+            <a href="/games" class="nav-login d-flex al-center quit-test">
+              <span class="menu-icon icon-pacman"></span>
+              <span class="menu-txt-item">games</span>
+            </a>
+          </li>
+          <li class="menu-nav-li" id="contact">
+            <a href="/contact" class="nav-login d-flex al-center quit-test">
+              <span class="menu-icon icon-envelop"></span>
+              <span class="menu-txt-item">contact</span>
+            </a>
+          </li>
         </ul>
+        <div class="social-media-header d-flex j-end al-center">
+          <ul class="d-flex j-end no-bullets">
+            <li><a href=""><span class="menu-icon-social icon-instagram"></span></a></li>
+            <li><a href=""><span class="menu-icon-social icon-facebook2"></span></a></li>
+            <li><a href=""><span class="menu-icon-social icon-twitter"></span></a></li>
+            <li><a href=""><span class="menu-icon-social icon-youtube"></span></a></li>
+          </ul>
+        </div>
       </nav>
-      <div class="social-media">
-        <ul class="d-flex f-wrap j-between no-bullets">
-          <li><a href="">Instagram</a></li>
-          <li>Facebook</li>
-          <li>Twitter</li>
-          <li>Youtube</li>
-        </ul>
-      </div>
     </div>
   </header>
   
-  <main class="main"></main>
+  <main class="main d-flex j-center al-center"></main>
 
-  <footer>
+  <footer class="d-flex al-center j-center">
+    <div class="social-media-footer">
+      <ul class="d-flex f-wrap j-between no-bullets">
+        <li><a href=""><span class="menu-icon-footer icon-instagram"></span></a></li>
+        <li><a href=""><span class="menu-icon-footer icon-facebook2"></span></a></li>
+        <li><a href=""><span class="menu-icon-footer icon-twitter"></span></a></li>
+        <li><a href=""><span class="menu-icon-footer icon-youtube"></span></a></li>
+      </ul>
+    </div>
     <div class="credits">
-      <p>© 2018, NerdQuiz. Todos os direitos reservados. Desenvolvido por Marcia Silva. <p>Powered by <a href="https://opentdb.com/" target="_blank">Open Trivia Database</a>.</p>
+      <p>© 2018, NerdQuiz. Todos os direitos reservados. Desenvolvido por Marcia Silva.</p> 
+      <p>Este site utiliza o banco de dados do <a href="https://opentdb.com/" target="_blank">Open Trivia Database</a>.</p>
     </div>
   </footer>
 
