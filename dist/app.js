@@ -29,7 +29,7 @@ const getQuizData = categoryId => {
 
 let quizData;
 const handleQuizDataResponse = (data, categoryId) => {
-  if (data['response_code'] === 4 || data['response_code'] === 1) {
+  if (data['response_code'] === 1 || data['response_code'] === 3 || data['response_code'] === 4) {
     localStorage.removeItem('nerdquizToken');
     requestToken();
     setTimeout(() => {getQuizData(categoryId)}, 500);
@@ -60,7 +60,7 @@ const getQuestionData = (i) => {
   const answerRoll = [answer, optOne, optTwo, optThree];
   const shuffledAnswered = shuffle(answerRoll);
 
-  showQuestion(questionNumber, question, shuffledAnswered);
+  $('main').html(renderQuestionTemplate(questionNumber, question, shuffledAnswered));
   countdown();
 }
 
@@ -77,11 +77,6 @@ const shuffle = array => {
       array[randomNumb] = temp;
   }
   return array;
-};
-
-const showQuestion = (questionNumber, question, shuffledAnswered) => {
-  $('main').html(renderQuestionTemplate(questionNumber, question, shuffledAnswered));
-  $('main .question-container').css('border', 'none');
 };
 
 const countdown = () => {
@@ -124,19 +119,26 @@ const selectAnswer = e => {
   const userAnswer = $(clickTarget).text();
 
   if (!$(clickTarget).hasClass('disabled')) { 
-    $(clickTarget).addClass('selected-answer');
 
     if (userAnswer === quizData[$(clickTarget).attr('data-question-number')].correct_answer) {
-      $('main .question-container').css('border', '4px solid green');
+      $(clickTarget).addClass('selected-right');
       score += 1;
     } else {
-      $('main .question-container').css('border', '4px solid red');
+      $(clickTarget).addClass('selected-wrong');
     }
   }
 
   $('main .option').map(index => {
-    if (!$(`main .option:eq(${index})`).hasClass('selected-answer')) {
+    if (!$(`main .option:eq(${index})`).hasClass('selected-right') && !$(`main .option:eq(${index})`).hasClass('selected-wrong')) {
       $(`main .option:eq(${index})`).addClass('disabled');
+    }
+  })
+
+  $('main .disabled').map(index => {
+    console.log('oi');
+    if ($(`main .disabled:eq(${index})`).text() === quizData[$(clickTarget).attr('data-question-number')].correct_answer) {
+      console.log('oi oi');
+      $(`main .disabled:eq(${index})`).addClass('selected-right');
     }
   })
 };
