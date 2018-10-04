@@ -40,6 +40,7 @@ const handleQuizDataResponse = (data, categoryId) => {
 
 let score = 0;
 const startGame = () => {
+
   $('main').empty();
   score = 0;
 
